@@ -1,0 +1,56 @@
+﻿<Window x:Class="WPFView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFView"
+        xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
+        xmlns:viewmodellayer="clr-namespace:ViewModelLayer;assembly=ViewModelLayer"
+        d:DataContext="{d:DesignInstance Type=viewmodellayer:StudentsListViewModel}"
+        mc:Ignorable="d"
+        Title="Деканат ПРО" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="Студенты">
+            <ListView Name="StudentsListView" ItemsSource="{Binding Students}" SelectionChanged="StudentsListView_OnSelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}">Имя</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Group}">Группа</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Speciality}">Специальность</GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <GroupBox Grid.Row="0" Header="Действия">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Height="28" Margin="0 0 0 2" Content="Заполнить систему тестовыми данными"
+                            Command="{Binding FillStudentsCommand}" />
+                    <Button Grid.Row="1" Height="28" Margin="0 0 0 2" Content="Добавить студента"
+                            Click="ButtonOpenAddWindow_OnClick" />
+                    <Button Grid.Row="2" Height="28" Margin="0 0 0 2" Content="Удалить выбранных студентов"
+                            Command="{Binding DeleteSelectedStudentsCommand}" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Header="График">
+                <WindowsFormsHost>
+                    <zed:ZedGraphControl x:Name="ZedGraphControl" />
+                </WindowsFormsHost>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>
